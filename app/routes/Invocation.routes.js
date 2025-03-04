@@ -5,6 +5,10 @@ invocationRouter.get("/", (req, res) => {
   res.send("invoc");
 });
 
+invocationRouter.get("/:id", (req, res) => {
+  res.send(req.params.id);
+});
+
 invocationRouter.post("/", (req, res) => {
   const requestBody = req.body;
 

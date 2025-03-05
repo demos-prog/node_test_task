@@ -1,5 +1,7 @@
 import { Router } from "express";
-import { InvocationService } from "../servecies/invocation.service";
+import { InvocationService } from "../servecies/invocation.service.js";
+import { validateId } from "../middlewares/idValidation.js";
+import { schemaInvocation } from "../schemas/invocation.schema.js";
 
 export class InvocationRoutes {
   constructor(prisma) {
@@ -10,7 +12,7 @@ export class InvocationRoutes {
 
   initializeRoutes() {
     this.router.get("/", this.getAll.bind(this));
-    this.router.get("/:id", this.getById.bind(this));
+    this.router.get("/:id", validateId, this.getById.bind(this));
     this.router.post("/", this.create.bind(this));
   }
 
@@ -21,13 +23,22 @@ export class InvocationRoutes {
 
   async getById(req, res) {
     const invocation = await this.invocationService.getById(req.params.id);
+    if (!invocation) {
+      res.status(404).send(JSON.stringify({ message: "Invocation not found" }));
+      return;
+    }
     res.send(invocation);
   }
 
   async create(req, res) {
     const requestBody = req.body;
-    const result = await this.invocationService.create(requestBody);
-    res.status(201).send(result);
+    try {
+      await schemaInvocation.validateAsync(requestBody);
+      const result = await this.invocationService.create(requestBody);
+      res.status(201).send(result);
+    } catch (error) {
+      res.status(400).send(JSON.stringify({ message: error.message }));
+    }
   }
 
   getRouter() {

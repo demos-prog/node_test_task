@@ -1,7 +1,6 @@
 import Joi from "joi";
 
 export const schemaInvocation = Joi.object({
-  id: Joi.string(),
   status: Joi.string()
     .valid("NEW", "IN_PROGRESS", "COMPLETE", "CANCEL")
     .required()

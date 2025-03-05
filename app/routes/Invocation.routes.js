@@ -1,31 +1,32 @@
 import { Router } from "express";
+import { InvocationService } from "../servecies/invocation.service";
 
 export class InvocationRoutes {
-  constructor(invocationService) {
+  constructor(prisma) {
     this.router = Router();
-    this.invocationService = invocationService;
+    this.invocationService = new InvocationService(prisma);
     this.initializeRoutes();
   }
 
   initializeRoutes() {
-    this.router.get("/", this.getAllInvocations.bind(this));
-    this.router.get("/:id", this.getInvocationById.bind(this));
-    this.router.post("/", this.createInvocation.bind(this));
+    this.router.get("/", this.getAll.bind(this));
+    this.router.get("/:id", this.getById.bind(this));
+    this.router.post("/", this.create.bind(this));
   }
 
-  async getAllInvocations(req, res) {
-    const invocations = await this.invocationService.findAll();
+  async getAll(req, res) {
+    const invocations = await this.invocationService.getAll();
     res.send(invocations);
   }
 
-  async getInvocationById(req, res) {
-    const invocation = await this.invocationService.findById(req.params.id);
+  async getById(req, res) {
+    const invocation = await this.invocationService.getById(req.params.id);
     res.send(invocation);
   }
 
-  async createInvocation(req, res) {
+  async create(req, res) {
     const requestBody = req.body;
-    const result = await this.invocationService.processInvocation(requestBody);
+    const result = await this.invocationService.create(requestBody);
     res.status(201).send(result);
   }
 

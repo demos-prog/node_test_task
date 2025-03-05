@@ -3,19 +3,19 @@ export class InvocationService {
     this.prisma = prisma;
   }
 
-  async findAll() {
+  async getAll() {
     const allInvocations = await this.prisma.invocation.findMany();
     return allInvocations;
   }
 
-  async findById(id) {
+  async getById(id) {
     const invocation = await this.prisma.invocation.findUnique({
       where: { id },
     });
     return invocation;
   }
 
-  async processInvocation(passedInvocation) {
+  async create(passedInvocation) {
     const invocation = await this.prisma.invocation.create({
       data: {
         status: passedInvocation.status,

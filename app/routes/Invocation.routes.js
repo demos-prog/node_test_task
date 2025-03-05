@@ -13,10 +13,11 @@ export class InvocationRoutes {
   initializeRoutes() {
     this.router.get("/", this.getAll.bind(this));
     this.router.get("/:id", validateId, this.getById.bind(this));
+    this.router.patch("/:id", validateId, this.switchToProgress.bind(this));
     this.router.post("/", this.create.bind(this));
   }
 
-  async getAll(req, res) {
+  async getAll(_, res) {
     const invocations = await this.invocationService.getAll();
     res.send(invocations);
   }
@@ -29,6 +30,18 @@ export class InvocationRoutes {
     }
     res.send(invocation);
   }
+
+  async switchToProgress(req, res) {
+    const invocation = await this.invocationService.switchToProgress(
+      req.params.id
+    );
+    if (!invocation) {
+      res.status(404).send(JSON.stringify({ message: "Invocation not found" }));
+      return;
+    }
+    res.send(invocation);
+  }
+
 
   async create(req, res) {
     const requestBody = req.body;

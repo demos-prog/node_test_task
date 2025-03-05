@@ -15,15 +15,27 @@ export class InvocationService {
     return invocation;
   }
 
-  async create(passedInvocation) {
-    const invocation = await this.prisma.invocation.create({
-      data: {
-        status: passedInvocation.status,
-        text: passedInvocation.text,
-        theme: passedInvocation.theme,
-      },
+  async switchToProgress(id) {
+    const invocation = await this.prisma.invocation.update({
+      where: { id },
+      data: { status: "IN_PROGRESS" },
     });
-
     return invocation;
+  }
+
+  async create(passedInvocation) {
+    try {
+      const invocation = await this.prisma.invocation.create({
+        data: {
+          status: "NEW",
+          text: passedInvocation.text,
+          theme: passedInvocation.theme,
+        },
+      });
+      return invocation;
+    } catch (error) {
+      console.error("Error creating invocation:", error);
+      throw error;
+    }
   }
 }

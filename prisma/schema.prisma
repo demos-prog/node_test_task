@@ -12,3 +12,17 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum InvocationStatus {
+  NEW
+  IN_PROGRESS
+  COMPLETE
+  CANCEL
+}
+
+model Invocation {
+  id    Int     @id @default(autoincrement())
+  status InvocationStatus
+  text  String
+  theme String
+}

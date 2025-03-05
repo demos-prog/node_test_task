@@ -1,14 +1,17 @@
 import express from "express";
 import appRouter from "./app/routes/App.routes.js";
-import invocationRouter from "./app/routes/Invocation.routes.js";
-const app = express();
+import { InvocationRoutes } from "./app/routes/Invocation.routes.js";
+import { InvocationService } from "./app/servecies/invocation.service.js";
 
-const port = 3000;
+const app = express();
+const port = process.env.PORT;
+
+const invocationRoutes = new InvocationRoutes(new InvocationService());
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/invoc", invocationRouter);
+app.use("/invoc", invocationRoutes.getRouter());
 app.use("/", appRouter);
 
 app.listen(port, () => {

@@ -1,8 +1,8 @@
 import express from "express";
-const appRouter = express.Router();
+const router = express.Router();
 
-appRouter.get("/", (req, res) => {
+router.get("/", (req, res) => {
   res.send("Hello");
 });
 
-export default appRouter;
+export default router;

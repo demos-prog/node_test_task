@@ -3,7 +3,7 @@ CREATE TYPE "InvocationStatus" AS ENUM ('NEW', 'IN_PROGRESS', 'COMPLETE', 'CANCE
 
 -- CreateTable
 CREATE TABLE "Invocation" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "status" "InvocationStatus" NOT NULL,
     "text" TEXT NOT NULL,
     "theme" TEXT NOT NULL,

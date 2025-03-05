@@ -21,7 +21,7 @@ enum InvocationStatus {
 }
 
 model Invocation {
-  id    Int     @id @default(autoincrement())
+  id    String     @id @default(uuid())
   status InvocationStatus
   text  String
   theme String

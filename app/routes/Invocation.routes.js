@@ -19,7 +19,8 @@ export class InvocationRoutes {
   }
 
   async getInvocationById(req, res) {
-    res.send(req.params.id);
+    const invocation = await this.invocationService.findById(req.params.id);
+    res.send(invocation);
   }
 
   async createInvocation(req, res) {

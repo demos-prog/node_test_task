@@ -25,6 +25,7 @@ model Invocation {
   status InvocationStatus
   text  String
   theme String
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
+  solution  String
+  createdAt String
+  updatedAt String
 }

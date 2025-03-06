@@ -7,8 +7,9 @@ CREATE TABLE "Invocation" (
     "status" "InvocationStatus" NOT NULL,
     "text" TEXT NOT NULL,
     "theme" TEXT NOT NULL,
-    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "solution" TEXT NOT NULL,
+    "createdAt" TEXT NOT NULL,
+    "updatedAt" TEXT NOT NULL,
 
     CONSTRAINT "Invocation_pkey" PRIMARY KEY ("id")
 );

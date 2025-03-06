@@ -18,8 +18,11 @@ export class InvocationRoutes {
     this.router.post("/", this.create.bind(this));
   }
 
-  async getAll(_, res) {
-    const invocations = await this.invocationService.getAll();
+  async getAll(req, res) {
+    const startDate = req.body.startDate;
+    const endDate = req.body.endDate;
+
+    const invocations = await this.invocationService.getAll(startDate, endDate);
     res.send(invocations);
   }
 

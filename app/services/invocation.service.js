@@ -100,4 +100,21 @@ export class InvocationService {
       throw error;
     }
   }
+
+  async cancel(id, cancelReason) {
+    try {
+      const invocation = await this.prisma.invocation.update({
+        where: { id },
+        data: {
+          status: "CANCELLED",
+          cancelReason: cancelReason,
+          updatedAt: getTodayFormatted(),
+        },
+      });
+      return invocation;
+    } catch (error) {
+      console.error("Error cancel:", error);
+      throw error;
+    }
+  }
 }

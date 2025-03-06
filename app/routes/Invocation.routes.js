@@ -4,6 +4,7 @@ import { validateId } from "../middlewares/idValidation.js";
 import { schemaInvocation } from "../schemas/invocation.schema.js";
 import { schemaStatus } from "../schemas/status.schema.js";
 import { schemaSolution } from "../schemas/solution.schema.js";
+import { schemaCancel } from "../schemas/cancel.schema.js";
 
 export class InvocationRoutes {
   constructor(prisma) {
@@ -17,6 +18,7 @@ export class InvocationRoutes {
     this.router.get("/:id", validateId, this.getById.bind(this));
     this.router.patch("/", this.cancelAllInProgress.bind(this));
     this.router.patch("/compl/:id", validateId, this.completion.bind(this));
+    this.router.patch("/cancel/:id", validateId, this.cancel.bind(this));
     this.router.patch("/:id", validateId, this.setStatus.bind(this));
     this.router.post("/", this.create.bind(this));
   }
@@ -88,7 +90,18 @@ export class InvocationRoutes {
       );
       res.send(result);
     } catch (error) {
-      res.status(400).send(JSON.stringify({ message: "Invocation not found" }));
+      res.status(400).send(JSON.stringify({ message: error.message }));
+    }
+  }
+
+  async cancel(req, res) {
+    try {
+      await schemaCancel.validateAsync(req.body);
+      const cancel = req.body.cancel;
+      const result = await this.invocationService.cancel(req.params.id, cancel);
+      res.send(result);
+    } catch (error) {
+      res.status(400).send(JSON.stringify({ message: error.message }));
     }
   }
 

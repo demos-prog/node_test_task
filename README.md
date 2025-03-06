@@ -65,7 +65,7 @@
    - **URL:** `PATCH /:id`
    - **Required Params:**
      - `id`: The ID of the invocation to update.
-     - `status`: The new status to set (included in the request body).
+     - `status`: The new status to set (NEW, IN_PROGRESS, COMPLETE, CANCELLED).
    - **Description:** Updates the status of a specific invocation.
 
 7. **Create Invocation**

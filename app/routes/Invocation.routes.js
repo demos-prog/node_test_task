@@ -14,6 +14,7 @@ export class InvocationRoutes {
   initializeRoutes() {
     this.router.get("/", this.getAll.bind(this));
     this.router.get("/:id", validateId, this.getById.bind(this));
+    this.router.patch("/", this.cancelAllInvocationsInProgress.bind(this));
     this.router.patch("/:id", validateId, this.setStatus.bind(this));
     this.router.post("/", this.create.bind(this));
   }
@@ -68,6 +69,12 @@ export class InvocationRoutes {
     } catch (error) {
       res.status(400).send(JSON.stringify({ message: error.message }));
     }
+  }
+
+  async cancelAllInvocationsInProgress(_, res) {
+    const result =
+      await this.invocationService.cancelAllInvocationsInProgress();
+    res.send(result);
   }
 
   getRouter() {

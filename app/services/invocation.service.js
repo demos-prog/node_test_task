@@ -69,4 +69,17 @@ export class InvocationService {
       throw error;
     }
   }
+
+  async cancelAllInvocationsInProgress() {
+    try {
+      const invocations = await this.prisma.invocation.updateMany({
+        where: { status: "IN_PROGRESS" },
+        data: { status: "CANCELLED", updatedAt: getTodayFormatted() },
+      });
+      return invocations;
+    } catch (error) {
+      console.error("Error updating status:", error);
+      throw error;
+    }
+  }
 }

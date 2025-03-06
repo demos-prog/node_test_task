@@ -1,5 +1,5 @@
 -- CreateEnum
-CREATE TYPE "InvocationStatus" AS ENUM ('NEW', 'IN_PROGRESS', 'COMPLETE', 'CANCEL');
+CREATE TYPE "InvocationStatus" AS ENUM ('NEW', 'IN_PROGRESS', 'COMPLETE', 'CANCELLED');
 
 -- CreateTable
 CREATE TABLE "Invocation" (

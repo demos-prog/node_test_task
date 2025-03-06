@@ -17,7 +17,7 @@ enum InvocationStatus {
   NEW
   IN_PROGRESS
   COMPLETE
-  CANCEL
+  CANCELLED
 }
 
 model Invocation {

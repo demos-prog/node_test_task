@@ -7,16 +7,17 @@
    ```bash
    npm ci
    ```
+2. Create `.env` file in root folder based on `.env.example`
 
-2. Run Docker desktop app.
+3. Run Docker desktop app.
 
-3. Start the database by running:
+4. Start the database by running:
 
    ```bash
    npm run postgres
    ```
 
-4. Start the server by running:
+5. Start the server by running:
 
    ```bash
    npm run dev

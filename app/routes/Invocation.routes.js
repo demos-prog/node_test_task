@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { InvocationService } from "../servecies/invocation.service.js";
+import { InvocationService } from "../services/invocation.service.js";
 import { validateId } from "../middlewares/idValidation.js";
 import { schemaInvocation } from "../schemas/invocation.schema.js";
 import { schemaStatus } from "../schemas/status.schema.js";

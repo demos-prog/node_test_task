@@ -15,12 +15,17 @@ export class InvocationService {
     return invocation;
   }
 
-  async switchToProgress(id) {
-    const invocation = await this.prisma.invocation.update({
-      where: { id },
-      data: { status: "IN_PROGRESS" },
-    });
-    return invocation;
+  async setStatus(id, newStatus) {
+    try {
+      const invocation = await this.prisma.invocation.update({
+        where: { id },
+        data: { status: newStatus },
+      });
+      return invocation;
+    } catch (error) {
+      console.error("Error updating status:", error);
+      throw error;
+    }
   }
 
   async create(passedInvocation) {

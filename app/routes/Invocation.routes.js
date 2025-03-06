@@ -2,6 +2,7 @@ import { Router } from "express";
 import { InvocationService } from "../servecies/invocation.service.js";
 import { validateId } from "../middlewares/idValidation.js";
 import { schemaInvocation } from "../schemas/invocation.schema.js";
+import { schemaStatus } from "../schemas/status.schema.js";
 
 export class InvocationRoutes {
   constructor(prisma) {
@@ -13,7 +14,7 @@ export class InvocationRoutes {
   initializeRoutes() {
     this.router.get("/", this.getAll.bind(this));
     this.router.get("/:id", validateId, this.getById.bind(this));
-    this.router.patch("/:id", validateId, this.switchToProgress.bind(this));
+    this.router.patch("/:id", validateId, this.setStatus.bind(this));
     this.router.post("/", this.create.bind(this));
   }
 
@@ -31,17 +32,29 @@ export class InvocationRoutes {
     res.send(invocation);
   }
 
-  async switchToProgress(req, res) {
-    const invocation = await this.invocationService.switchToProgress(
-      req.params.id
-    );
-    if (!invocation) {
-      res.status(404).send(JSON.stringify({ message: "Invocation not found" }));
+  async setStatus(req, res) {
+    try {
+      await schemaStatus.validateAsync(req.body);
+      const newStatus = req.body.status;
+
+      const invocation = await this.invocationService.setStatus(
+        req.params.id,
+        newStatus
+      );
+
+      if (!invocation) {
+        res
+          .status(404)
+          .send(JSON.stringify({ message: "Invocation not found" }));
+        return;
+      }
+
+      res.send(invocation);
+    } catch (error) {
+      res.status(400).send(JSON.stringify({ message: error.message }));
       return;
     }
-    res.send(invocation);
   }
-
 
   async create(req, res) {
     const requestBody = req.body;

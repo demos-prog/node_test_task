@@ -58,9 +58,10 @@ export class InvocationService {
           status: "NEW",
           text: passedInvocation.text,
           theme: passedInvocation.theme,
+          solution: "",
+          cancelReason: "",
           createdAt: getTodayFormatted(),
           updatedAt: getTodayFormatted(),
-          solution: "",
         },
       });
       return invocation;
@@ -70,7 +71,7 @@ export class InvocationService {
     }
   }
 
-  async cancelAllInvocationsInProgress() {
+  async cancelAllInProgress() {
     try {
       const invocations = await this.prisma.invocation.updateMany({
         where: { status: "IN_PROGRESS" },
@@ -79,6 +80,23 @@ export class InvocationService {
       return invocations;
     } catch (error) {
       console.error("Error updating status:", error);
+      throw error;
+    }
+  }
+
+  async completion(id, solution) {
+    try {
+      const invocation = await this.prisma.invocation.update({
+        where: { id },
+        data: {
+          status: "COMPLETE",
+          solution: solution,
+          updatedAt: getTodayFormatted(),
+        },
+      });
+      return invocation;
+    } catch (error) {
+      console.error("Error completion:", error);
       throw error;
     }
   }

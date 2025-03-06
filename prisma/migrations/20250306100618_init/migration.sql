@@ -8,6 +8,7 @@ CREATE TABLE "Invocation" (
     "text" TEXT NOT NULL,
     "theme" TEXT NOT NULL,
     "solution" TEXT NOT NULL,
+    "cancelReason" TEXT NOT NULL,
     "createdAt" TEXT NOT NULL,
     "updatedAt" TEXT NOT NULL,
 

@@ -26,6 +26,7 @@ model Invocation {
   text  String
   theme String
   solution  String
+  cancelReason  String
   createdAt String
   updatedAt String
 }

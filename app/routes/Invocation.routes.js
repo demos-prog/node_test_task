@@ -3,6 +3,7 @@ import { InvocationService } from "../services/invocation.service.js";
 import { validateId } from "../middlewares/idValidation.js";
 import { schemaInvocation } from "../schemas/invocation.schema.js";
 import { schemaStatus } from "../schemas/status.schema.js";
+import { schemaSolution } from "../schemas/solution.schema.js";
 
 export class InvocationRoutes {
   constructor(prisma) {
@@ -14,7 +15,8 @@ export class InvocationRoutes {
   initializeRoutes() {
     this.router.get("/", this.getAll.bind(this));
     this.router.get("/:id", validateId, this.getById.bind(this));
-    this.router.patch("/", this.cancelAllInvocationsInProgress.bind(this));
+    this.router.patch("/", this.cancelAllInProgress.bind(this));
+    this.router.patch("/compl/:id", validateId, this.completion.bind(this));
     this.router.patch("/:id", validateId, this.setStatus.bind(this));
     this.router.post("/", this.create.bind(this));
   }
@@ -71,10 +73,23 @@ export class InvocationRoutes {
     }
   }
 
-  async cancelAllInvocationsInProgress(_, res) {
-    const result =
-      await this.invocationService.cancelAllInvocationsInProgress();
+  async cancelAllInProgress(_, res) {
+    const result = await this.invocationService.cancelAllInProgress();
     res.send(result);
+  }
+
+  async completion(req, res) {
+    try {
+      await schemaSolution.validateAsync(req.body);
+      const solution = req.body.solution;
+      const result = await this.invocationService.completion(
+        req.params.id,
+        solution
+      );
+      res.send(result);
+    } catch (error) {
+      res.status(400).send(JSON.stringify({ message: "Invocation not found" }));
+    }
   }
 
   getRouter() {
